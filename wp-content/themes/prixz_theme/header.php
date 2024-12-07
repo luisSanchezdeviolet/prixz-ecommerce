@@ -14,13 +14,13 @@ if (!defined('ABSPATH')) {
 <head>
     <script src="<?php echo get_template_directory_uri(); ?>/public/js/color-modes.js"></script>
 
-    <meta charset="utf-8">
+    <meta charset="<?php bloginfo('charset'); ?>">
     <link href="<?php echo get_template_directory_uri(); ?>/public/images/icon_webp.webp" rel="icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Luis Fernando">
     <meta name="generator" content="Hugo 0.122.0">
-    <title>Prixz - Ecommerce</title>
+    <title><?php bloginfo('name'); ?> <?php (!empty(wp_title())) ? wp_title() : ' '; ?></title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <link href="<?php echo get_template_directory_uri(); ?>/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
