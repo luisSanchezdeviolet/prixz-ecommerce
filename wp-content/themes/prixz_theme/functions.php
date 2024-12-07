@@ -5,6 +5,7 @@ if(!defined('ABSPATH')) {
 }
 
 if(!function_exists('prixz_setup')) {
+    
     function prixz_setup() {
         add_theme_support('post-thumbnails');
     }
