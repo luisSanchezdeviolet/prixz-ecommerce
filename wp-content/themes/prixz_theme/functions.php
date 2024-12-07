@@ -25,3 +25,13 @@ if(!function_exists('custom_enquenue')) {
 
     add_action('wp_enqueue_scripts', 'custom_enquenue');
 }
+
+
+if(!function_exists('activarMenu')) {
+    function activarMenu() {
+        register_nav_menus(array(
+            'menu-principal' => __('Menú Principal', 'farmacia_prixz')
+        ));
+    }
+    add_action('init', 'activarMenu');
+}
