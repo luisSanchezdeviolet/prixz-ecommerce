@@ -87,7 +87,13 @@ if (!defined('ABSPATH')) {
 
   <div class="nav-scroller py-1 mb-3 border-bottom">
     <nav class="nav nav-underline justify-content-between">
-      <a class="nav-item nav-link link-body-emphasis active" href="#">Home</a>
+      <?= strip_tags(wp_nav_menu(array(
+        'container' => false,
+        'echo'=>false,
+        'items_wrap' =>'%3$s',
+        'theme_location' => 'menu-principal'
+      )), '<a>'); ?>
     </nav>
+    
   </div>
 </div>
