@@ -1,13 +1,18 @@
 <?php
 
-    if(!defined('ABSPATH')) {
-        die();;
-    }
+if (!defined('ABSPATH')) {
+    die();;
+}
 
-    get_header();
+get_header();
+?>
 
-    the_content();
+<main class="container">
+    <?php the_content(); ?>
+</main>
 
-    get_footer();
+<?php
+
+get_footer();
 
 ?>
