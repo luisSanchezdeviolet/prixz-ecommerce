@@ -99,7 +99,15 @@ while (have_posts()):
                             </form>
                             <!---Listar comentarios-->
                             <h3><?= sizeof($comentarios); ?> Comentarios</h3>
-                            
+                            <?php 
+                                foreach($comentarios as $comentario) {
+                                    ?>
+                                    <div class="media">
+                                        <img src="" alt="">
+                                    </div>
+                                    <?php
+                                }
+                            ?>
                         </div>
                     </div>
                 </div>
