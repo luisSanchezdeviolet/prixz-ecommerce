@@ -25,7 +25,7 @@ if (!defined('ABSPATH')) {
     <link href="<?php echo get_template_directory_uri(); ?>/public/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Playfair&#43;Display:700,900&amp;display=swap" rel="stylesheet">
     <link href="<?php echo get_template_directory_uri(); ?>/public/css/blog.css" rel="stylesheet">
-    <link href="<?php echo get_template_directory_uri(); ?>/public/css/sweetalert2.css.css" rel="stylesheet">
+    <link href="<?php echo get_template_directory_uri(); ?>/public/css/sweetalert2.css" rel="stylesheet">
 
     <?php wp_head(); ?>
 </head>

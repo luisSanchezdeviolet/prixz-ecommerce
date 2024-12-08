@@ -1,4 +1,4 @@
-function validaCorreo(valor) {
+function validaEmail(valor) {
   if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){
    return true;
   } else {
@@ -58,44 +58,44 @@ function carga_ajax_get(ruta, valor1, div) {
  function confirmarSubmit( )
  {
     var form=document.form;
-    if(form.nombre.value==0)
+    if(form.author.value==0)
     { 
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
-        text: 'El campo nombre es obligatorio',
+        text: 'El campo author es obligatorio',
     });
-    form.nombre.value='';
+    form.author.value='';
     return false;
     }
      
-    if(form.correo.value==0)
+    if(form.email.value==0)
     { 
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'El campo E-Mail es obligatorio',
     });
-    form.correo.value='';
+    form.email.value='';
     return false;
     }
-    if(validaCorreo(form.correo.value)==false){
+    if(validaEmail(form.email.value)==false){
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'El E-Mail ingresado no es válido',
         });
-        form.correo.value='';
+        form.email.value='';
         return false;
     }
-    if(form.mensaje.value==0)
+    if(form.comentarios.value==0)
     { 
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'El campo comentario es obligatorio',
     });
-    form.mensaje.value='';
+    form.comentarios.value='';
     return false;
     }
     form.submit();
@@ -147,6 +147,3 @@ function buscador22() {
     }
     window.location = "/curso_php_udemy/ejemplo_1/public/bd/buscador?b=" + document.getElementById('b').value;
 }
- 
-
- 

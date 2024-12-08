@@ -20,7 +20,7 @@ if(!function_exists('custom_enquenue')) {
 
         wp_enqueue_script("bootstrapJs", get_template_directory_uri().'/public/js/bootstrap.min.js', array('jquery'));
         wp_enqueue_script("sweetAlert2", get_template_directory_uri().'/public/js/sweetalert2.js', array('jquery'));
-        wp_enqueue_script("funciones", get_template_directory_uri().'/public/js/funcionesjs');
+        wp_enqueue_script("funciones", get_template_directory_uri().'/public/js/funciones.js');
     }
 
     add_action('wp_enqueue_scripts', 'custom_enquenue');
