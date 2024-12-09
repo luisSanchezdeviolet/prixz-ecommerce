@@ -48,7 +48,7 @@ class PrixzContactPlugin
             PRIMARY KEY (id)
         ) $charset_collate;";
         $wpdb->query($sql);
-        $wpdb->query("ALTER TABLE $table_name ADD INDEX(`email`);");
+        $wpdb->query("ALTER TABLE {$this->table_name} ADD INDEX(`email`);");
 
         $sql_respuestas = "CREATE TABLE IF NOT EXISTS $this->table_name_respuestas (
             id INT NOT NULL AUTO_INCREMENT,
@@ -62,8 +62,8 @@ class PrixzContactPlugin
             FOREIGN KEY (prixz_form_principal_id) REFERENCES $this->table_name (id)
         ) $charset_collate;";
         $wpdb->query($sql_respuestas);
-        $wpdb->query("ALTER TABLE $table_name_respuestas ADD INDEX(`email`);");
-        $wpdb->query("ALTER TABLE $table_name_respuestas ADD INDEX(`phone`);");
+        $wpdb->query("ALTER TABLE {$this->table_name_respuestas} ADD INDEX(`email`);");
+        $wpdb->query("ALTER TABLE {$this->table_name_respuestas} ADD INDEX(`phone`);");
     }
 
     public function desactivar()
