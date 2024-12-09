@@ -1,149 +1,144 @@
-function validaEmail(valor) {
-  if (/^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i.test(valor)){
-   return true;
-  } else {
-   return false;
-  }
+function validaCorreo(valor) {
+    const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+    return emailRegex.test(valor);
 }
-function carga_ajax_get(ruta, valor1, div) {
-     $.get(ruta, { valor1: valor1 }, function(resp) {
-         $("#" + div + "").html(resp);
-     });
-     return false;
 
- }
- function confirmaAlert(pregunta, ruta) {
-     jCustomConfirm(pregunta, 'Tamila', 'Aceptar', 'Cancelar', function(r) {
-         if (r) {
-             window.location = ruta;
-         }
-     });
- }
- function cerrarSesion(ruta)
- {
-     Swal.fire({
-         title: 'Realmente deseas cerrar tu sesión?',
-         icon: 'info',
-         showDenyButton: true,
-         showCancelButton: true,
-         confirmButtonText: 'Si',
-         confirmButtonColor: '#3085d6',
-             cancelButtonColor: '#d33',
-             cancelButtonText: 'NO' 
-       }).then((result) => {
-         
-         if (result.isConfirmed) {
-           window.location=ruta;
-         }  
-       })
- }
- function confirmarSweet(pregunta, ruta)
- {
-     Swal.fire({
-         title: pregunta,
-         icon: 'error',
-         showDenyButton: true,
-         showCancelButton: true,
-         confirmButtonText: 'Si',
-         confirmButtonColor: '#3085d6',
-             cancelButtonColor: '#d33',
-             cancelButtonText: 'NO' 
-       }).then((result) => {
-         
-         if (result.isConfirmed) {
-           window.location=ruta;
-         }  
-       })
- }
- function confirmarSubmit( )
- {
-    var form=document.form;
-    if(form.author.value==0)
-    { 
-    Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'El campo author es obligatorio',
+function confirmaAlert(pregunta, ruta) {
+    jCustomConfirm(pregunta, 'Prixz', 'Aceptar', 'Cancelar', function(r) {
+        if (r) {
+            window.location = ruta;
+        }
     });
-    form.author.value='';
-    return false;
-    }
-     
-    if(form.email.value==0)
-    { 
+}
+
+function cerrarSesion(ruta) {
     Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'El campo E-Mail es obligatorio',
+        title: '¿Realmente deseas cerrar tu sesión?',
+        icon: 'info',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location = ruta;
+        }
     });
-    form.email.value='';
-    return false;
+}
+
+function confirmarSweet(pregunta, ruta) {
+    Swal.fire({
+        title: pregunta,
+        icon: 'error',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location = ruta;
+        }
+    });
+}
+
+function buscador() {
+    const searchValue = document.getElementById('s').value;
+    if (searchValue === '') {
+        return false;
     }
-    if(validaEmail(form.email.value)==false){
+    document.search.submit();
+}
+
+function soloNumeros(evt) {
+    const key = evt.keyCode || evt.which;
+    return (key >= 48 && key <= 57) || key === 8 || key === 127 || key === 9 || key === 0;
+}
+
+function obtenerRespuestasFormulario(id) {
+    jQuery(document).ready(function($) {
+        $("#respuesta_modal").modal("show");
+        document.getElementById('respuesta_modal_title').innerHTML = `Respuestas formulario N° ${id}`;
+        $.ajax({
+            type: "POST",
+            url: datosajax.url,
+            data: {
+                action: "prixz_contact_form_respuestas_ajax",
+                nonce: datosajax.nonce,
+                id: id,
+            },
+            success: function(resp) {
+                $("#respuesta_modal_body").html(resp);
+            }
+        });
+    });
+}
+
+function abrirModalFormulario(accion, titulo, nombre, correo, id = null) {
+    jQuery(document).ready(function($) {
+        $("#crear_formulario").modal("show");
+        document.getElementById('crear_formulario_title').innerHTML = titulo;
+        document.getElementById('prixz_input_name').value = nombre || '';
+        document.getElementById('prixz_input_email').value = correo || '';
+        document.getElementById('prixz_input_action').value = accion;
+
+        if (accion === 'editar' && id !== null) {
+            document.getElementById('prixz_input_id').value = id;
+        }
+    });
+}
+
+function validarYEnviarFormulario() {
+    const form = document.prixz_contact_form_crear;
+
+    if (!form.prixz_input_name.value.trim()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El campo nombre es obligatorio',
+        });
+        return false;
+    }
+
+    if (!form.prixz_input_email.value.trim()) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'El campo E-Mail es obligatorio',
+        });
+        return false;
+    }
+
+    if (!validaCorreo(form.prixz_input_email.value)) {
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: 'El E-Mail ingresado no es válido',
         });
-        form.email.value='';
         return false;
     }
-    if(form.comentarios.value==0)
-    { 
+
+    form.submit();
+}
+
+function eliminarFormulario(id) {
     Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
-        text: 'El campo comentario es obligatorio',
+        title: '¿Realmente desea eliminar este registro?',
+        icon: 'warning',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonText: 'Sí',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'No',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.prixz_contact_form_eliminar.accion.value = '3';
+            document.prixz_contact_form_eliminar.id.value = id;
+            document.prixz_contact_form_eliminar.submit();
+        }
     });
-    form.comentarios.value='';
-    return false;
-    }
-    form.submit();
- }
- function buscador()
- {
-    if(document.getElementById('s').value==0)
-    {
-        return false;
-    }
-    document.search.submit();
- }
- function soloNumeros(evt) {
-     key = (document.all) ? evt.keyCode : evt.which;
-     //alert(key);
-     if (key == 17) return false;
-     /* digitos,del, sup,tab,arrows*/
-     return ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 9 || key == 0);
- }
- function crear_producto()
- {
-    var form=document.form;
-    if(form.file.value==0)
-    {
-        form.foto.value='vacio';
-    }
-    form.submit();
- }
- function set_atributos()
- {
-    if ($('input[type=checkbox]:checked').length === 0) {
-         //e.preventDefault();
-         alertAlert('Debe seleccionar al menos un atributo!!!!!');
-         return false;
-     }
-     document.form.submit();
- }
- function salir(ruta)
- {
-    jCustomConfirm('¿Realmente desea cerrar sesión?', 'Ejemplo 1', 'Aceptar', 'Cancelar', function(r) {
-         if (r) {
-             window.location = ruta;
-         }
-     });
- }
-function buscador22() {
-    if (document.getElementById('b').value == 0) {
-        return false;
-    }
-    window.location = "/curso_php_udemy/ejemplo_1/public/bd/buscador?b=" + document.getElementById('b').value;
 }
