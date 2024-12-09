@@ -4,6 +4,13 @@
 if (! defined('ABSPATH')) {
     exit;
 }
+
+global $wpdb;
+$table_name = $wpdb->prefix.'prixz_contact';
+$table_name_respuestas = $wpdb->prefix.'prixz_contact_respuestas';
+
+$datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
+
 ?>
 
 <div class="wrap">
@@ -24,9 +31,29 @@ if (! defined('ABSPATH')) {
                             <th>Shortcode</th>
                             <th>Respuestas</th>
                             <th>Acciones</th>
-                            
                         </tr>
                     </thead>
+                    <tbody>
+                        <?php 
+                            foreach($datos as $dato) {
+                                ?>
+                                    <tr>
+                                        <td><?= $dato->id;  ?></td>
+                                        <td><?= $dato->name;  ?></td>
+                                        <td><?= $dato->email;  ?></td>
+                                        <td> [prixz_contact id="<?= $dato->id ?>"]</td>
+                                        <td>
+                                            <a href="" class="fas fa-search"></a>
+                                        </td>
+                                        <td>
+                                            <a href="" ><i class="fas fa-edit"></i></a>
+                                            <a href="" ><i class="fas fa-trash"></i></a>
+                                        </td>
+                                    </tr>
+                                <?php
+                            }
+                        ?>
+                    </tbody>
                 </table>
             </div>
         </div>
