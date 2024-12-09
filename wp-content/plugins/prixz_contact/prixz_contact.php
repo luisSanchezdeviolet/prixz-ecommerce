@@ -122,43 +122,132 @@ class PrixzContactPlugin
     }
 
     public function mostrar_formulario_contacto($args, $content = "")
-    {
-        $nonce = wp_create_nonce("prixz_contact_form_nonce");
-        ob_start();
-?>
-        <div class="container">
-            <form action="" method="POST" name="contact_form_respuestas">
-                <div class="row">
-                    <div class="col-8">
-                        <h5><?php _e('Completa el siguiente formulario y nos pondremos en contacto contigo', 'prixz_contact'); ?></h5>
-                        <div class="mb-3">
-                            <label for="name" class="form-label"><?php _e('Nombre:', 'prixz_contact'); ?></label>
-                            <input type="text" name="name" id="name" class="form-control" placeholder="<?php _e('Nombre', 'prixz_contact'); ?>" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="form-label"><?php _e('E-Mail:', 'prixz_contact'); ?></label>
-                            <input type="email" name="email" id="email" class="form-control" placeholder="<?php _e('E-Mail', 'prixz_contact'); ?>" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="phone" class="form-label"><?php _e('Teléfono:', 'prixz_contact'); ?></label>
-                            <input type="text" name="phone" id="phone" class="form-control" placeholder="<?php _e('Teléfono', 'prixz_contact'); ?>" />
-                        </div>
-                        <div class="mb-3">
-                            <label for="message" class="form-label"><?php _e('Mensaje:', 'prixz_contact'); ?></label>
-                            <textarea class="form-control" name="message" id="message" placeholder="<?php _e('Mensaje', 'prixz_contact'); ?>"></textarea>
-                        </div>
-                        <input type="hidden" name="nonce" value="<?php echo esc_attr($nonce); ?>" id="nonce" />
-                        <hr />
-                        <button type="submit" class="btn btn-warning">
-                            <i class="fas fa-envelope"></i> <?php _e('Enviar', 'prixz_contact'); ?>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-<?php
-        return ob_get_clean();
+{
+    global $wpdb;
+
+    $nonce = wp_create_nonce("prixz_contact_form_nonce");
+
+    // Procesar el formulario antes de cualquier salida
+    if (isset($_POST['nonce']) && wp_verify_nonce($_POST['nonce'], 'prixz_contact_form_nonce')) {
+        $data = [
+            'prixz_form_principal_id' => isset($args['id']) ? $args['id'] : 0,
+            'name' => sanitize_text_field($_POST['name']),
+            'email' => sanitize_text_field($_POST['email']),
+            'phone' => sanitize_text_field($_POST['phone']),
+            'message' => sanitize_textarea_field($_POST['message']),
+            'fecha' => date('Y-m-d')
+        ];
+
+        // Inserción en la base de datos
+        $wpdb->insert("{$wpdb->prefix}prixz_contact_respuestas", $data);
+
+        // Redirigir al usuario con un mensaje
+        ?>
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: '¡Gracias!',
+                text: 'Tu mensaje se ha enviado correctamente. Nos pondremos en contacto contigo a la brevedad.',
+            }).then(() => {
+                window.location = location.href; // Refrescar la página después de la confirmación
+            });
+        </script>
+        <?php
     }
+    ?>
+
+    <script>
+        function validaCorreo(valor) {
+            const regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\\.,;:\s@\"]+\.)+[^<>()[\]\\.,;:\s@\"]{2,})$/i;
+            return regex.test(valor);
+        }
+
+        function prixz_form_contact_validate() {
+            const form = document.forms['prixz_contact_form'];
+
+            if (!form.name.value.trim()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El campo Nombre es obligatorio.',
+                });
+                return false;
+            }
+
+            if (!form.email.value.trim()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El campo E-Mail es obligatorio.',
+                });
+                return false;
+            }
+
+            if (!validaCorreo(form.email.value)) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El E-Mail ingresado no es válido.',
+                });
+                return false;
+            }
+
+            if (!form.phone.value.trim()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El campo Teléfono es obligatorio.',
+                });
+                return false;
+            }
+
+            if (!form.message.value.trim()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'El campo Mensaje es obligatorio.',
+                });
+                return false;
+            }
+
+            return true; // Permitir el envío si todo es válido
+        }
+    </script>
+
+    <?php ob_start(); ?>
+
+    <div class="container">
+        <form action="" method="POST" name="prixz_contact_form" onsubmit="return prixz_form_contact_validate();">
+            <div class="row">
+                <div class="col-8">
+                    <h5><?php _e('Completa el siguiente formulario y nos pondremos en contacto contigo', 'prixz_contact'); ?></h5>
+                    <div class="mb-3">
+                        <label for="name" class="form-label"><?php _e('Nombre:', 'prixz_contact'); ?></label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="<?php _e('Nombre', 'prixz_contact'); ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label"><?php _e('E-Mail:', 'prixz_contact'); ?></label>
+                        <input type="email" name="email" id="email" class="form-control" placeholder="<?php _e('E-Mail', 'prixz_contact'); ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="phone" class="form-label"><?php _e('Teléfono:', 'prixz_contact'); ?></label>
+                        <input type="text" name="phone" id="phone" class="form-control" placeholder="<?php _e('Teléfono', 'prixz_contact'); ?>">
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label"><?php _e('Mensaje:', 'prixz_contact'); ?></label>
+                        <textarea name="message" id="message" class="form-control" placeholder="<?php _e('Mensaje', 'prixz_contact'); ?>"></textarea>
+                    </div>
+                    <input type="hidden" name="nonce" value="<?php echo esc_attr($nonce); ?>">
+                    <button type="submit" class="btn btn-warning"><i class="fas fa-envelope"></i> <?php _e('Enviar', 'prixz_contact'); ?></button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <?php
+    return ob_get_clean();
+}
+
 }
 
 new PrixzContactPlugin();
