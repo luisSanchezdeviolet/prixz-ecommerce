@@ -16,13 +16,12 @@ if (!defined('ABSPATH')) die();
 class PrixzSEO
 {
     private $table_name;
-    private $table_name_respuestas;
+
 
     public function __construct()
     {
         global $wpdb;
         $this->table_name = $wpdb->prefix . 'prixz_seo';
-        $this->table_name_respuestas = $wpdb->prefix . 'prixz_contact_respuestas';
         register_activation_hook(__FILE__, [$this, 'instalarPluginSeo']);
         register_deactivation_hook(__FILE__, [$this, 'tamila_seo_desactivar']);
         register_uninstall_hook(__FILE__, [$this, 'uninstall_plugin']);
