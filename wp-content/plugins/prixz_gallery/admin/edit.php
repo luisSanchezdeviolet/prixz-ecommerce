@@ -13,6 +13,53 @@ $id = sanitize_text_field($_GET['id']);
 global $wpdb;
 $table_gallery = "{$wpdb->prefix}prixz_plugin_gallery";
 $table_photos = "{$wpdb->prefix}prixz_plugin_photos";
+
+
+
+
+if(isset($_POST['nonce'])) {
+    switch($_POST['action']){
+        case 'create':
+            $data = [
+                'prixz_galeria_id'=>$id,
+                'name' => sanitize_text_field($_POST['photo_value']),
+                'wordpress_id' => sanitize_text_field($_POST['photo_id']),
+                'url'=>substr($_POST['photo_url'],strlen(get_site_url()), strlen($_POST['photo_url']))
+                //'url' => sanitize_text_field($_POST['tamila_galeria_agregar_foto_url']) 
+            ]; 
+              $wpdb->insert($table_photos, $data);
+              ?>
+              <script>
+                  document.addEventListener('DOMContentLoaded', () => {
+                    Swal.fire({
+                      icon: 'success',
+                      title: 'OK',
+                      text: 'Se creó el registro exitosamente',
+                    })
+                  })
+              </script>
+                        <?php
+        break;
+        case 'delete':
+            $wpdb->delete($tabla2, array('id' =>$_POST['foto_id']));
+            ?>
+              <script>
+                  Swal.fire({
+                      icon: 'success',
+                      title: 'OK',
+                      text: 'Se eliminó el registro exitosamente',
+                  });
+                  setInterval(() => {
+                    window.location=location.href;
+                  }, 3000);
+              </script>
+                        <?php
+        break;
+
+     }
+}
+
+
 $sql = "SELECT * FROM {$table_gallery} WHERE id='".$id."';";
 $data = $wpdb->get_results($sql, ARRAY_A);
 if (empty($data)) {
@@ -22,8 +69,8 @@ if (empty($data)) {
         </script>
     <?php }
 
-$photos = $wpdb->get_results("SELECT  * from {$table_photos} where id ='".$id."' ORDER BY id DESC");
-error_log('Hook actual: ' . $hook);
+$sqlPhotos = "SELECT  * from {$table_photos} where prixz_galeria_id = '".$id."' ORDER BY id DESC";
+$photos = $wpdb->get_results($sqlPhotos);
 
 ?>
 
@@ -53,7 +100,9 @@ error_log('Hook actual: ' . $hook);
                             foreach($photos as $photo) {
                                 ?>
                                     <tr>
-                                        <td>Foto</td>
+                                        <td>
+                                            <img src="<?= get_site_url().$photo->url; ?>" height="200px" alt="">
+                                        </td>
                                         <td><a href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
                                     </tr>
                                 <?php
@@ -65,3 +114,14 @@ error_log('Hook actual: ' . $hook);
         </div>
     </div>
 </div>
+
+
+
+<!-- formulario para crear imagenes-->
+<form action="" name="form_add_photo" method="POST">
+<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('seg');?>" id="nonce" />
+<input type="hidden" name="action" value="create" />
+    <input type="hidden" name="photo_id" />
+    <input type="hidden" name="photo_value" />
+    <input type="hidden" name="photo_url" />
+</form>

@@ -156,7 +156,7 @@ function validaCorreo(valor) {
  
  //media de wordpress
  jQuery(document).ready(function($){
-  var marco, $btn_marco=$('.btnMarco');
+  var marco, $btn_marco=$('.btn-marco');
   $btn_marco.on('click', function(){
     if (marco){
       marco.open();
@@ -177,15 +177,14 @@ function validaCorreo(valor) {
   });
   marco.on( 'select', function(){
             
-        //aquí es en donde tú puedes trabajar para obtener la data de la imagen seleccionada y empoderarte de ella
           //console.log(marco.state().get('selection').first().toJSON());
           //console.log(marco.state().get('selection').first().toJSON().id);
           //console.log(marco.state().get('selection').first().toJSON().filename);
           //console.log(marco.state().get('selection').first().toJSON().url);
-          let form=document.tamila_galeria_agregar_foto;
-          form.tamila_galeria_agregar_foto_wordpress_id.value=  marco.state().get('selection').first().toJSON().id;
-          form.tamila_galeria_agregar_foto_foto.value=  marco.state().get('selection').first().toJSON().filename;
-          form.tamila_galeria_agregar_foto_url.value=  marco.state().get('selection').first().toJSON().url;
+          let form=document.form_add_photo;
+          form.photo_id.value=  marco.state().get('selection').first().toJSON().id;
+          form.photo_value.value=  marco.state().get('selection').first().toJSON().filename;
+          form.photo_url.value=  marco.state().get('selection').first().toJSON().url;
           form.submit();
         });
         
