@@ -28,6 +28,7 @@ class PrixzGallery
         register_deactivation_hook(__FILE__, [$this, 'plugin_deactivate']);
         add_action('admin_enqueue_scripts', [$this, 'upload_enqueue']);
         add_action('admin_menu', [$this, 'add_menu_plugin']);
+        add_action('init', [$this, 'add_shortcode_page']);
     }
 
 
@@ -116,6 +117,44 @@ class PrixzGallery
     {
         require_once plugin_dir_path(__FILE__) . 'admin/edit.php';
     }
+
+
+    public function add_shortcode_page() {
+        add_shortcode('prixz_gallery', [$this,'prixz_gallery_display']);
+    }
+
+    public function prixz_gallery_display($args, $content = '') {
+        global $wpdb;
+        $sql="select * from {$this->table_name_photos} where prixz_galeria_id='".sanitize_text_field($args['id'])."' order by id desc;"; 
+        $datos=$wpdb->get_results($sql, ARRAY_A);
+        ?>
+        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php
+                foreach($datos as $key=>$dato){
+                    ?>
+                    <div class="carousel-item <?php echo ($key==0) ? 'active':'';?>">
+                        <img src="<?php echo get_site_url().$dato['url'];?>" class="d-block w-100 img-fluid" />
+                        </div>
+                    <?php
+                }
+                ?>
+                
+                 
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+            </div>
+        <?php
+    }
+
+
 
 }
 
