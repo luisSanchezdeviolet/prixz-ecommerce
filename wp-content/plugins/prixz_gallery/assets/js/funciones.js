@@ -86,23 +86,23 @@ function validaCorreo(valor) {
     });
     
  }
- function get_crear_galeria (){
+ function galleryCreateModal (){
     jQuery(document).ready(function($){
-        $("#tamila_galeria_crear").modal("show"); 
+        $("#createModal").modal("show"); 
         
          
     });
  }
- function tamila_galeria_crear(){
-    var form=document.tamila_galeria_crear_form;
-    if(form.nombre.value==0)
+ function galleryCreateRegister(){
+    var form=document.formCrearGaleria;
+    if(form.name.value==0)
     { 
     Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'El campo nombre es obligatorio',
     });
-    form.nombre.value='';
+    form.name.value='';
     return false;
     }
     
