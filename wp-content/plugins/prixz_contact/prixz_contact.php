@@ -16,6 +16,10 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
 class PrixzContactPlugin
 {
     private $table_name;
@@ -32,6 +36,7 @@ class PrixzContactPlugin
         add_action('admin_enqueue_scripts', [$this, 'cargar_dependencias']);
         add_action('admin_menu', [$this, 'agregar_menu_administracion']);
         add_action('init', [$this, 'registrarShortcode']);
+        add_action('wp_ajax_prixz_contact_form_respuestas', [$this,'prixz_contact_form_respuestas']);
     }
 
     public function activar()
@@ -86,7 +91,7 @@ class PrixzContactPlugin
             wp_enqueue_script('bootstrapJs', plugins_url('assets/js/bootstrap.min.js', __FILE__), ['jquery'], null, true);
             wp_enqueue_script('sweetAlert2', 'https://cdn.jsdelivr.net/npm/sweetalert2@11', ['jquery'], null, true);
             wp_enqueue_script('funciones', plugins_url('assets/js/funciones.js', __FILE__), ['jquery', 'sweetAlert2'], null, true);
-            wp_localize_script('funcionesj','datosajax',[
+            wp_localize_script('funciones','datosajax',[
                 'url' => admin_url('admin-ajax.php'),
                 'nonce' => wp_create_nonce('seg')
             ]);
@@ -129,31 +134,41 @@ class PrixzContactPlugin
     public function mostrar_formulario_contacto($args, $content = ""){
         global $wpdb;
         
+        $idPost = $args['id'];
+        $namePost = sanitize_text_field($_POST['name_prixz']);
+        $emailPost = sanitize_text_field($_POST['email_prixz']);
+        $phonePost = sanitize_text_field($_POST['phone_prixz']);
+        $messagePost = sanitize_text_field($_POST['message_prixz']);
 
         if(isset($_POST['nonce'])) {
             $data = [
-                'prixz_form_principal_id' => $args['id'],
-                'name' => sanitize_text_field($_POST['name_prixz']),
-                'email' => sanitize_text_field($_POST['email_prixz']),
-                'phone' => sanitize_text_field($_POST['phone_prixz']),
-                'message' => sanitize_text_field($_POST['message_prixz']),
+                'prixz_form_principal_id' => $idPost,
+                'name' => $namePost,
+                'email' => $emailPost,
+                'phone' => $phonePost,
+                'message' => $messagePost,
                 'fecha' => date('Y-m-d')
             ];
             $wpdb->insert($this->table_name_respuestas, $data);
 
             //enviar el correo
 
+            var_dump($this->sendEmail($idPost, $namePost, $emailPost, $phonePost, $messagePost));
+
 
             //redireccionar al usuario
             ?>
                 <script>
-                Swal.fire({
-                icon: 'success',
-                title: 'OK',
-                text: 'Se envió tu mensaje exitosamente, nos pondremos en contacto contigo a la brevedad',
-            }).then(() => {
-                window.location=location.href;
-            })
+                    Swal.fire({
+                    icon: 'success',
+                    title: 'OK',
+                    text: 'Se envió tu mensaje exitosamente, nos pondremos en contacto contigo a la brevedad',
+                });
+            // setInterval(()=>{
+            //     window.location=location.href;
+            // });
+
+            
             </script>
             <?php
         }
@@ -237,6 +252,88 @@ class PrixzContactPlugin
        $html.='</form></div>';
        return $html;
 
+    }
+
+    public function sendEmail($id, $name, $email, $phone, $message) {
+        global $wpdb;
+        $datos=$wpdb->get_results("select email from $this->table_name where id='{$id}';", ARRAY_A);
+
+        var_dump($datos);
+        
+        require 'vendor/autoload.php';
+        $mail = new PHPMailer(true);
+
+        try {
+            $mail->STMTDebug = SMTP::DEBUG_SERVER;
+            $mail->isSMTP();
+            $mail->Host ='smtp.hostinger.com';
+            $mail->SMTPAuth   = true;
+            $mail->Username='ventas@farmacias-ferxxo.cloud';
+            $mail->Password='|cXTdfpG8>w';
+            $mail->Port = 465;
+
+            $mail->setFrom('ventas@farmacias-ferxxo.cloud', "Farmacias seguras");
+            $mail->addAddress($datos[0]['email'], utf8_decode(bloginfo('name')));
+
+            $mail->isHTML(true);
+            $mail->Subject='Asunto de el mail';
+            $mail->Body = utf8_decode(
+                                        '<h1>Mensaje desde sitio web</h1> <hr />
+                                        <ul>
+                                            <li>Nombre: '.$name.'</li>
+                                            <li>E-Mail: '.$email.'</li>
+                                            <li>Teléfono: '.$phone.'</li>
+                                            <li>Mensaje: '.$message.'</li>
+                                            
+                                        </ul>
+                                        '
+                                    );
+
+            $mail->send();
+            return true;
+
+        } catch (Exception $e) {
+        return false;
+        }
+    }
+
+    public function prixz_contact_form_respuestas() {
+        $nonce = $_POST['nonce'];
+        if(!wp_verify_nonce($nonce, 'seg')) {
+            die('No tiene permisos para ejecutar este ajax');
+        }
+        global $wpdb;
+        $query="select * from $this->table_name_respuestas where prixz_form_principal_id='".sanitize_text_field($_POST['id'])."' order by id desc;";
+        $datos=$wpdb->get_results($query, ARRAY_A);
+        ?>
+        <table class="table table-bordered table-hover table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>E-Mail</th>
+                    <th>Teléfono</th>
+                    <th>Mensaje</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                foreach($datos as $dato){
+                    ?>
+                    <tr>
+                        <td><?php echo $dato['name'];?></td>
+                        <td><?php echo $dato['email'];?></td>
+                        <td><?php echo $dato['phone'];?></td>
+                        <td><?php echo $dato['message'];?></td>
+                        <td><?php echo $dato['fecha'];?></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </tbody>
+        </table>
+        <?php
+        wp_die();
     }
 
 }

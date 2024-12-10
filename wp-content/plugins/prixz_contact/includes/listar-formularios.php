@@ -35,7 +35,26 @@ if (isset($_POST['nonce'])) {
             break;
 
         case 'edit':
-
+                $data = [
+            
+                    'name' => sanitize_text_field($_POST['name']),
+                    'email' => sanitize_text_field($_POST['email'])
+                ]; 
+                $wpdb->update($table_name, $data, array('id'=>$_POST['id']));
+                ?>
+                <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ok',
+                        text: 'Se creó el registro exitósamente',
+                    }).then(() => {
+                        window.location.reload();
+                    })
+                })
+                    
+                </script>
+                <?php
             break;
 
         case 'delete':
@@ -78,10 +97,10 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
                                 <td><?= $dato->email;  ?></td>
                                 <td> [prixz_contact id="<?= $dato->id ?>"]</td>
                                 <td>
-                                    <a href="" class="fas fa-search"></a>
+                                    <a href="javascript:void(0);" onclick="obtenerRespuestasFormulario(<?= $dato->id; ?>);" class="fas fa-search"></a>
                                 </td>
                                 <td>
-                                    <a href=""><i class="fas fa-edit"></i></a>
+                                    <a href="javascript:void(0);" onclick="abrirModalFormulario('edit', 'Editar formuñario N° <?= $dato->id; ?>', '<?= $dato->name; ?>', '<?= $dato->email; ?>', '<?= $dato->id; ?>');"><i class="fas fa-edit"></i></a>
                                     <a href=""><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
@@ -104,9 +123,7 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="crear_formulario_title"></h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -117,7 +134,7 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
                         </div>
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Nombre:</label>
+                            <label for="email" class="form-label">Correo:</label>
                             <input type="text" class="form-control" placeholder="Email" name="email" id="prixz_input_email">
                         </div>
 
@@ -130,6 +147,23 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+
+<!--Respuestas-->
+<div class="modal fade" id="respuesta_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="respuesta_modal_title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="respuesta_modal_body">
+
+            </div>
+
         </div>
     </div>
 </div>

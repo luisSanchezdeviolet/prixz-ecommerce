@@ -66,7 +66,7 @@ function obtenerRespuestasFormulario(id) {
             type: "POST",
             url: datosajax.url,
             data: {
-                action: "prixz_contact_form_respuestas_ajax",
+                action: "prixz_contact_form_respuestas",
                 nonce: datosajax.nonce,
                 id: id,
             },
@@ -85,7 +85,7 @@ function abrirModalFormulario(accion, titulo, nombre, correo, id = null) {
         document.getElementById('prixz_input_email').value = correo || '';
         document.getElementById('prixz_input_action').value = accion;
 
-        if (accion === 'editar' && id !== null) {
+        if (accion === 'edit' && id !== null) {
             document.getElementById('prixz_input_id').value = id;
         }
     });
