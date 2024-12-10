@@ -131,7 +131,7 @@ function validaCorreo(valor) {
       });
       return false;
  }
- function get_eliminar_foto_galeria(galeria_id, foto_id, foto){
+ function deletePhoto(photo_id, gallery_id, photo_path){
     Swal.fire({
         title: 'Realmente desea eliminar este registro?',
         icon: 'warning',
@@ -144,11 +144,11 @@ function validaCorreo(valor) {
       }).then((result) => {
         
         if (result.isConfirmed) { 
-          document.tamila_galeria_eliminar_foto.accion.value='3';
-          document.tamila_galeria_eliminar_foto.galeria_id.value=galeria_id;
-          document.tamila_galeria_eliminar_foto.foto_id.value=foto_id;
-          document.tamila_galeria_eliminar_foto.foto.value=foto;
-          document.tamila_galeria_eliminar_foto.submit();
+          document.form_delet_photo.action.value='delete';
+          document.form_delet_photo.gallery_id.value=gallery_id;
+          document.form_delet_photo.gallery_photo_id.value=photo_id;
+          document.form_delet_photo.gallery_photo_path.value=photo_path;
+          document.form_delet_photo.submit();
         }  
       });
       return false;

@@ -41,19 +41,18 @@ if(isset($_POST['nonce'])) {
                         <?php
         break;
         case 'delete':
-            $wpdb->delete($tabla2, array('id' =>$_POST['foto_id']));
+            $wpdb->delete($table_photos, array('id' =>$_POST['photo_id']));
             ?>
               <script>
-                  Swal.fire({
+                  document.addEventListener('DOMContentLoaded',() => {
+                    Swal.fire({
                       icon: 'success',
                       title: 'OK',
                       text: 'Se eliminó el registro exitosamente',
-                  });
-                  setInterval(() => {
-                    window.location=location.href;
-                  }, 3000);
+                    });
+                  })
               </script>
-                        <?php
+            <?php
         break;
 
      }
@@ -103,7 +102,7 @@ $photos = $wpdb->get_results($sqlPhotos);
                                         <td>
                                             <img src="<?= get_site_url().$photo->url; ?>" height="200px" alt="">
                                         </td>
-                                        <td><a href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
+                                        <td><a href="javascript:void(0);" title="Eliminar" onclick="deletePhoto('<?= $photo->id; ?>', '<?= $photo->prixz_galeria_id; ?>', '<?= $photo->url; ?>');"><i class="fas fa-trash"></i></a></td>
                                     </tr>
                                 <?php
                             }
@@ -124,4 +123,15 @@ $photos = $wpdb->get_results($sqlPhotos);
     <input type="hidden" name="photo_id" />
     <input type="hidden" name="photo_value" />
     <input type="hidden" name="photo_url" />
+</form>
+
+
+<!---Eliminar foto-->
+
+<form action="" name="form_delet_photo" method="POST">
+<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('seg');?>" id="nonce" />
+<input type="hidden" name="action" id="action_photo_delete" />
+    <input type="hidden" name="gallery_id" id="gallery_id" />
+    <input type="hidden" name="photo_id" id="gallery_photo_id" />
+    <input type="hidden" name="photo_path" id="gallery_photo_path" />
 </form>
