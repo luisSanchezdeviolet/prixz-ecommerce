@@ -65,26 +65,26 @@ function validaCorreo(valor) {
      /* digitos,del, sup,tab,arrows*/
      return ((key >= 48 && key <= 57) || key == 8 || key == 127 || key == 9 || key == 0);
  }
- function tamila_seo_modificar(){
-    jQuery(document).ready(function($){
-        $("#tamila_seo_modal").modal("show");
-        document.getElementById('tamila_seo_modal_title').innerHTML="Editar keywords";
+ function edit_register() {
+    jQuery(document).ready(function($) {
+        $("#prixz_seo_modal").modal("show");
+        document.getElementById('prixz_seo_modal_title').innerHTML = "Editar keywords";
         $.ajax({
             type: "POST",
-            url: tamila_seo_datosajax.url,
-            data:{
-                action : "tamila_seo_modificar",
-                nonce : tamila_seo_datosajax.nonce,
-                id: 'id',
+            url: prixz_seo_data.url, // prixz_seo_data obtenido de wp_localize_script
+            data: {
+                action: "edit",
+                nonce: prixz_seo_data.nonce,
+                id: 1 // Asumiendo que es el ID fijo que usas
             },
-            success:function(resp){
+            success: function(resp) {
                 $("#respuesta_modal_body").html(resp);
                 return false;
             }
         });
     });
-    
- }
+}
+
  function get_crear_formulario(que, title, nombre, correo, id){
     jQuery(document).ready(function($){
         $("#crear_formulario").modal("show"); 
@@ -100,8 +100,8 @@ function validaCorreo(valor) {
         }
     });
  }
- function tamila_seo_enviar(){
-    var form=document.tamila_seo_form;
+ function prixz_seo_enviar(){
+    var form=document.prixz_seo_form;
     if(form.keywords.value==0)
     { 
     Swal.fire({
