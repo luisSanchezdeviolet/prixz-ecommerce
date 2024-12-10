@@ -128,7 +128,6 @@ function eliminarFormulario(id) {
     Swal.fire({
         title: '¿Realmente desea eliminar este registro?',
         icon: 'warning',
-        showDenyButton: true,
         showCancelButton: true,
         confirmButtonText: 'Sí',
         confirmButtonColor: '#3085d6',
@@ -136,9 +135,9 @@ function eliminarFormulario(id) {
         cancelButtonText: 'No',
     }).then((result) => {
         if (result.isConfirmed) {
-            document.prixz_contact_form_eliminar.accion.value = '3';
-            document.prixz_contact_form_eliminar.id.value = id;
-            document.prixz_contact_form_eliminar.submit();
+            document.prixz_contact_eliminar.action.value = 'delete';
+            document.prixz_contact_eliminar.id.value = id;
+            document.prixz_contact_eliminar.submit();
         }
     });
 }

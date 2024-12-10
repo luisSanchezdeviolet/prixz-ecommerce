@@ -58,7 +58,20 @@ if (isset($_POST['nonce'])) {
             break;
 
         case 'delete':
+            $wpdb->delete($table_name_respuestas, array('prixz_form_principal_id' =>$_POST['id']));
+            $wpdb->delete($table_name,array('id' =>$_POST['id']));
+            ?>
 
+            <script>
+                    document.addEventListener('DOMContentLoaded', () => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Ok',
+                        text: 'Se eliminó el registro exitósamente',
+                    })
+                })
+            </script>
+            <?php
             break;
     }
 }
@@ -101,7 +114,7 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
                                 </td>
                                 <td>
                                     <a href="javascript:void(0);" onclick="abrirModalFormulario('edit', 'Editar formuñario N° <?= $dato->id; ?>', '<?= $dato->name; ?>', '<?= $dato->email; ?>', '<?= $dato->id; ?>');"><i class="fas fa-edit"></i></a>
-                                    <a href=""><i class="fas fa-trash"></i></a>
+                                    <a href="javascript:void(0);" onclick="eliminarFormulario('<?= $dato->id; ?>');"><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
                         <?php
@@ -167,3 +180,11 @@ $datos = $wpdb->get_results("SELECT * FROM $table_name ORDER BY id DESC;");
         </div>
     </div>
 </div>
+
+
+<!---Eliminar-->
+<form action="" name="prixz_contact_eliminar" method="POST">
+<input type="hidden" name="nonce" value="<?php echo wp_create_nonce('seg');?>" id="nonce" />
+<input type="hidden" name="action" />
+<input type="hidden" name="id" id="prixz_contact_eliminar_id" />
+</form>

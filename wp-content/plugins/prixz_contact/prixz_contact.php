@@ -153,20 +153,22 @@ class PrixzContactPlugin
 
             //enviar el correo
 
-            var_dump($this->sendEmail($idPost, $namePost, $emailPost, $phonePost, $messagePost));
+            $this->sendEmail($idPost, $namePost, $emailPost, $phonePost, $messagePost);
+
 
 
             //redireccionar al usuario
             ?>
                 <script>
-                    Swal.fire({
-                    icon: 'success',
-                    title: 'OK',
-                    text: 'Se envió tu mensaje exitosamente, nos pondremos en contacto contigo a la brevedad',
-                });
-            // setInterval(()=>{
-            //     window.location=location.href;
-            // });
+                    
+                    document.addEventListener('DOMContentLoaded', () => {
+                        Swal.fire({
+                        icon: 'success',
+                        title: 'OK',
+                        text: 'Se envió tu mensaje exitosamente, nos pondremos en contacto contigo a la brevedad',
+                        })
+                    })
+                    
 
             
             </script>
@@ -258,19 +260,20 @@ class PrixzContactPlugin
         global $wpdb;
         $datos=$wpdb->get_results("select email from $this->table_name where id='{$id}';", ARRAY_A);
 
-        var_dump($datos);
         
         require 'vendor/autoload.php';
         $mail = new PHPMailer(true);
 
         try {
-            $mail->STMTDebug = SMTP::DEBUG_SERVER;
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+            $mail->Debugoutput = 'error_log';
             $mail->isSMTP();
             $mail->Host ='smtp.hostinger.com';
             $mail->SMTPAuth   = true;
             $mail->Username='ventas@farmacias-ferxxo.cloud';
             $mail->Password='|cXTdfpG8>w';
             $mail->Port = 465;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
 
             $mail->setFrom('ventas@farmacias-ferxxo.cloud', "Farmacias seguras");
             $mail->addAddress($datos[0]['email'], utf8_decode(bloginfo('name')));
@@ -288,7 +291,6 @@ class PrixzContactPlugin
                                         </ul>
                                         '
                                     );
-
             $mail->send();
             return true;
 
