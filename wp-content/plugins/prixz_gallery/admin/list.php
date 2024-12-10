@@ -58,7 +58,7 @@ $datos=$wpdb->get_results($query, ARRAY_A);
                             <td><?= $dato['id']; ?></td>
                             <td><?= $dato['name']; ?></td>
                             <td>[prixz_gallery id=<?= $dato['id']; ?>]</td>
-                            <td><a href=""><i class="fas fa-images"></i></a></td>
+                            <td><a href="<?= admin_url('admin.php?page=prixz_gallery_edit');?>&id=<?= $dato['id']; ?>"><i class="fas fa-images"></i></a></td>
                             <td><a href="javascript:void(0);"><i class="fas fa-trash"></i></a></td>
                         </tr>
                     <?php

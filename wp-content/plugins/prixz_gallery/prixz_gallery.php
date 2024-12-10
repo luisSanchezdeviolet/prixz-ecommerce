@@ -67,7 +67,7 @@ class PrixzGallery
 
     public function upload_enqueue($hook)
     {
-        if ($hook !== 'toplevel_page_prixz_gallery_menu') {
+        if (strpos($hook, 'prixz_gallery') === false) {
             return;
         }
 
@@ -95,12 +95,26 @@ class PrixzGallery
             plugin_dir_url(__FILE__)."assets/images/galeria.png",
             142
         );
+        add_submenu_page(
+            'prixz_gallery_menu',          // Menú padre.
+            'Fotos de la Galeria',         // Título de la página.
+            '',
+            'manage_options',              // Capacidad requerida.
+            'prixz_gallery_edit',                // Slug único.
+            [$this, 'viewEditGallery']     // Callback para mostrar el contenido.
+        );
+        
     }
 
 
     public function mostrarLista()
     {
         require_once plugin_dir_path(__FILE__) . 'admin/list.php';
+    }
+
+    public function viewEditGallery()
+    {
+        require_once plugin_dir_path(__FILE__) . 'admin/edit.php';
     }
 
 }
