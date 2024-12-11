@@ -105,11 +105,12 @@ function validaCorreo(valor) {
     form.name.value='';
     return false;
     }
-    
-    
+  
     
     form.submit();
  }
+
+ 
  function get_eliminar_galeria(id){
     Swal.fire({
         title: 'Realmente desea eliminar este registro?',
@@ -131,28 +132,53 @@ function validaCorreo(valor) {
       });
       return false;
  }
- function deletePhoto(photo_id, gallery_id, photo_path){
-    Swal.fire({
-        title: 'Realmente desea eliminar este registro?',
-        icon: 'warning',
-        showDenyButton: true,
-        showCancelButton: true,
-        confirmButtonText: 'Si',
-        confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            cancelButtonText: 'NO' 
-      }).then((result) => {
-        
-        if (result.isConfirmed) { 
-          document.form_delet_photo.action.value='delete';
-          document.form_delet_photo.gallery_id.value=gallery_id;
-          document.form_delet_photo.gallery_photo_id.value=photo_id;
-          document.form_delet_photo.gallery_photo_path.value=photo_path;
-          document.form_delet_photo.submit();
-        }  
-      });
-      return false;
- }
+ function deletePhoto(photo_id, gallery_id, photo_path) {
+  // Validar existencia del formulario
+  const form = document.forms["form_delet_photo"];
+  if (!form) {
+      console.error("El formulario form_delet_photo no existe.");
+      Swal.fire("Error", "No se pudo encontrar el formulario para eliminar la foto.", "error");
+      return;
+  }
+
+  // Validar existencia de los campos
+  if (!form.gallery_id || !form.photo_id || !form.photo_path) {
+      console.error("Los campos necesarios del formulario no están definidos.", { form });
+      Swal.fire("Error", "Faltan campos necesarios en el formulario.", "error");
+      return;
+  }
+
+  // Validar datos recibidos
+  if (!photo_id || !gallery_id || !photo_path) {
+      console.error("Faltan parámetros necesarios:", { photo_id, gallery_id, photo_path });
+      Swal.fire("Error", "No se recibieron datos necesarios para eliminar la foto.", "error");
+      return;
+  }
+
+  // Confirmar eliminación
+  Swal.fire({
+      title: "¿Realmente desea eliminar este registro?",
+      icon: "warning",
+      showDenyButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Si",
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      cancelButtonText: "NO",
+  }).then((result) => {
+      if (result.isConfirmed) {
+          // Asignar valores al formulario
+          form.action.value = "delete";
+          form.gallery_id.value = gallery_id;
+          form.photo_id.value = photo_id;
+          form.photo_path.value = photo_path;
+
+          // Enviar formulario
+          form.submit();
+      }
+  });
+}
+
  
  //media de wordpress
  jQuery(document).ready(function($){
