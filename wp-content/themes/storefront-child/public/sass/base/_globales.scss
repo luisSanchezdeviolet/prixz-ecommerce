@@ -1,0 +1,32 @@
+//Global Style
+//fuentes
+@use 'variables' as v;
+@use 'base/mixins' as m;
+body {
+    font-family: v.$fuente_principal !important;
+}
+
+
+.col-full {
+    padding: 0;
+}
+
+//Eliminar enlaces activos
+a:focus,
+.focus a {
+    outline: none;
+}
+
+a {
+    text-decoration: none !important;
+}
+
+
+li {
+    list-style: none;
+}
+
+
+.d-none {
+    display: none;
+}
