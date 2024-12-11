@@ -1,0 +1,26 @@
+{
+  "name": "breezee_theme",
+  "version": "1.0.0",
+  "description": "Dependencias para e-commerce de breezee",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "sass": "sass --watch sources/scss:sources/styles/",
+    "dev": "gulp dev"
+  },
+  "keywords": [
+    "SASS",
+    "PHP",
+    "WORDPRESS",
+    "JS",
+    "HTML"
+  ],
+  "author": "Violet Data Services",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^5.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-sourcemaps": "^3.0.0",
+    "sass": "^1.75.0"
+  }
+}
