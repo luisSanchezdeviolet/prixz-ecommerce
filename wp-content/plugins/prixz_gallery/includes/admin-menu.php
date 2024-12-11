@@ -19,6 +19,15 @@ add_action('admin_menu', function () {
         'prixz_gallery_edit',
         'prixz_gallery_edit'
     );
+
+    add_submenu_page(
+        'prixz_gallery_menu',
+        'Ofertas del Día',
+        'Ofertas del Día',
+        'manage_options',
+        'prixz_daily_offers',
+        'prixz_daily_offers_view'
+    );
 });
 
 // Cargar vistas
@@ -28,4 +37,8 @@ function prixz_gallery_list() {
 
 function prixz_gallery_edit() {
     include plugin_dir_path(__FILE__) . '../views/edit.php';
+}
+
+function prixz_daily_offers_view() {
+    include plugin_dir_path(__FILE__) . '../views/offers.php';
 }
