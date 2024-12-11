@@ -28,3 +28,5 @@ function prixz_save_daily_offers($products) {
 function prixz_get_daily_offers() {
     return get_option('prixz_daily_offers', []);
 }
+
+
