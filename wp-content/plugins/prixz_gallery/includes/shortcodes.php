@@ -80,12 +80,19 @@ function prixz_daily_offers_shortcode() {
                                 ?>
                                 <div class="col-md-3">
                                     <div class="offer-item text-center">
-                                        <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php echo esc_attr($product->get_name()); ?>" class="img-fluid offer-image">
-                                        <h3 class="offer-title"><?php echo esc_html($product->get_name()); ?></h3>
+                                        <a href="<?php echo get_permalink($product_id); ?>" class="offer-link">
+                                            <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php echo esc_attr($product->get_name()); ?>" class="img-fluid offer-image">
+                                        </a>
+                                        <h3 class="offer-title">
+                                            <a href="<?php echo get_permalink($product_id); ?>">
+                                                <?php echo esc_html($product->get_name()); ?>
+                                            </a>
+                                        </h3>
                                         <p class="offer-price"><?php echo wc_price($product->get_sale_price()); ?></p>
                                         <?php if ($product->get_regular_price() > $product->get_sale_price()): ?>
                                             <p class="offer-regular-price"><del><?php echo wc_price($product->get_regular_price()); ?></del></p>
                                         <?php endif; ?>
+                                        <a href="<?php echo esc_url('?add-to-cart=' . $product_id); ?>" class="btn btn-primary">Agregar al carrito</a>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
@@ -104,7 +111,6 @@ function prixz_daily_offers_shortcode() {
         </div>
         <?php
     } else {
-        
         ?>
         <div class="row">
             <?php foreach ($offer_ids as $product_id): ?>
@@ -114,12 +120,21 @@ function prixz_daily_offers_shortcode() {
                 ?>
                 <div class="col-md-3">
                     <div class="offer-item text-center">
-                        <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php echo esc_attr($product->get_name()); ?>" class="img-fluid offer-image">
-                        <h3 class="offer-title"><?php echo esc_html($product->get_name()); ?></h3>
-                        <p class="offer-price"><?php echo wc_price($product->get_sale_price()); ?></p>
-                        <?php if ($product->get_regular_price() > $product->get_sale_price()): ?>
-                            <p class="offer-regular-price"><del><?php echo wc_price($product->get_regular_price()); ?></del></p>
-                        <?php endif; ?>
+                        <a href="<?php echo get_permalink($product_id); ?>" class="offer-link">
+                            <img src="<?php echo get_the_post_thumbnail_url($product_id, 'medium'); ?>" alt="<?php echo esc_attr($product->get_name()); ?>" class="img-fluid offer-image">
+                        </a>
+                        <h3 class="offer-title">
+                            <a href="<?php echo get_permalink($product_id); ?>">
+                                <?php echo esc_html($product->get_name()); ?>
+                            </a>
+                        </h3>
+                        <div class="container-offers-price">
+                            <p class="offer-price"><?php echo wc_price($product->get_sale_price()); ?></p>
+                            <?php if ($product->get_regular_price() > $product->get_sale_price()): ?>
+                                <p class="offer-regular-price"><del><?php echo wc_price($product->get_regular_price()); ?></del></p>
+                            <?php endif; ?>
+                        </div>
+                        <a href="<?php echo esc_url('?add-to-cart=' . $product_id); ?>" class="btn btn-primary">Agregar al carrito</a>
                     </div>
                 </div>
             <?php endforeach; ?>
@@ -129,4 +144,3 @@ function prixz_daily_offers_shortcode() {
 
     return ob_get_clean();
 }
-

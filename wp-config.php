@@ -79,9 +79,17 @@ $table_prefix = 'wp_';
  *
  * @link https://wordpress.org/documentation/article/debugging-in-wordpress/
  */
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', true);
+
+ 
+define('WP_DEBUG', false);
+define('WP_DEBUG_LOG', false);
 define('WP_DEBUG_DISPLAY', false);
+
+
+@ini_set('upload_max_filesize', '128M');
+@ini_set('post_max_size', '128M');
+@ini_set('max_execution_time', '300');
+@ini_set('max_input_time', '300');
 
 
 /* Add any custom values between this line and the "stop editing" line. */

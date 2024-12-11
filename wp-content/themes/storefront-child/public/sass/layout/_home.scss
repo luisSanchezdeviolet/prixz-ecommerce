@@ -1,0 +1,50 @@
+@use 'base/variables' as v;
+@use 'base/mixins' as m;
+
+//header slide
+.home-slider {
+
+    height: 120px;
+    margin-bottom: 80px;
+    
+    @include m.desktop {
+        height: 330px;
+        margin-bottom: 120px;
+    }
+
+    #prixzCarousel1 {
+        height: 100%;
+
+        .carousel-inner {
+            height: 100%;
+            
+            div {
+                height: 100%;
+            }
+        }
+
+        img {
+            height: 100%;
+        }
+    }
+    
+}
+
+
+//Home products
+
+.daily-offers {
+    margin-bottom: 40px;
+
+
+    .container-offers-price {
+        display: flex;
+        justify-content: end;
+        gap: 16px;
+    
+        .offer-regular-price {
+            padding-right: 40px;
+        }
+    }
+}
+

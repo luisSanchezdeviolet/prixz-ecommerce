@@ -16,6 +16,10 @@ get_header(); ?>
         <h2>Ofertas del Día</h2>
         <?php echo do_shortcode('[prixz_daily_offers]'); ?>
     </section>
+
+    <section class="bastion-products-container">
+        <?php include get_stylesheet_directory() . '/includes/bastion-products.php'; ?>
+    </section>
 </div>
 
 <?php

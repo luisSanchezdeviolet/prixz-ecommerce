@@ -22,4 +22,39 @@ li {
 .d-none {
   display: none;
 }
+
+.home-slider {
+  height: 120px;
+  margin-bottom: 80px;
+}
+@media (min-width: 1080px) {
+  .home-slider {
+    height: 330px;
+    margin-bottom: 120px;
+  }
+}
+.home-slider #prixzCarousel1 {
+  height: 100%;
+}
+.home-slider #prixzCarousel1 .carousel-inner {
+  height: 100%;
+}
+.home-slider #prixzCarousel1 .carousel-inner div {
+  height: 100%;
+}
+.home-slider #prixzCarousel1 img {
+  height: 100%;
+}
+
+.daily-offers {
+  margin-bottom: 40px;
+}
+.daily-offers .container-offers-price {
+  display: flex;
+  justify-content: end;
+  gap: 16px;
+}
+.daily-offers .container-offers-price .offer-regular-price {
+  padding-right: 40px;
+}
 /*# sourceMappingURL=app.css.map */

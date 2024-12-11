@@ -20,7 +20,7 @@ add_action('wp_enqueue_scripts', 'cargar_dependencias_tema_hijo');
 function enqueue_custom_home_assets() {
     if (is_front_page()) {
 
-        wp_enqueue_style('custom-home-styles', get_stylesheet_directory_uri() . '/public/css/home.css', [], '1.0');
+        wp_enqueue_style('custom-home-styles', get_stylesheet_directory_uri() . '/public/css/app.css', [], '1.0');
 
 
         wp_enqueue_script('custom-home-scripts', get_stylesheet_directory_uri() . '/public/js/home.js', ['jquery'], '1.0', true);

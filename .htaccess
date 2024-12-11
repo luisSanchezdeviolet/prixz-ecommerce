@@ -1,4 +1,3 @@
-
 # BEGIN WordPress
 # Las directivas (líneas) entre "BEGIN WordPress" y "END WordPress" son
 # generadas dinámicamente y solo deberían ser modificadas mediante filtros de WordPress.
@@ -12,5 +11,4 @@ RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
 </IfModule>
-
 # END WordPress
